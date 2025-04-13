@@ -230,15 +230,16 @@ document.addEventListener("DOMContentLoaded", function () {
 		if (file) {
 			reader.onload = function (event) {
 				imgPath = event.target.result;
-			addGameToList(gameId, imgPath, name, link, category);
-			saveGame(gameId, imgPath, name, link, category);
+			addMovieToList(movieId, imgPath, name, link, category);
+			saveMovie(movieId, imgPath, name, link, category);
 			};
 			
 			reader.readAsDataURL(file);
 		} else { 
-			imgPath = "https://github.com/hiro011/movies-list/blob/main/default-movie.jpg?raw=true"; // defualt image
-			addGameToList(gameId, imgPath, name, link, category);
-			saveGame(gameId, imgPath, name, link, category);
+			//imgPath = "https://github.com/hiro011/movies-list/blob/main/default-movie.jpg?raw=true"; // defualt image
+			imgPath =  "images/default-movie.jpg";
+			addMovieToList(movieId, imgPath, name, link, category);
+			saveMovie(movieId, imgPath, name, link, category);
 		}
 		
 		// Instead of storing Base64, save the file path or filename
