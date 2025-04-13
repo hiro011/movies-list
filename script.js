@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	const deleteMovieForm = document.getElementById("delete-movie");
     const deleteButton = document.getElementById("delete-b"); 
-
+	const defaultImage = "https://github.com/hiro011/movies-list/blob/main/default-movie.jpg?raw=true"; 
 
     // Track currently editing movie
 	let currentEditingMovie = null;
@@ -236,7 +236,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			
 			reader.readAsDataURL(file);
 		} else { 
-			imgPath = "https://github.com/hiro011/movies-list/blob/main/default-movie.jpg?raw=true"; // defualt image
+			imgPath = defaultImage; // defualt image
 			addMovieToList(movieId, imgPath, name, link, category);
 			saveMovie(movieId, imgPath, name, link, category);
 		}
@@ -516,7 +516,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		movies.forEach(movie => {
             // Ensure valid data before adding
             if (movie && movie.id != null && movie.name && movie.category) {
-                 addMovieToList(movie.id, movie.imgPath || "https://github.com/hiro011/movies-list/blob/main/default-movie.jpg?raw=true", movie.name, movie.link || "#", movie.category);
+                 addMovieToList(movie.id, movie.imgPath || defaultImage, movie.name, movie.link || "#", movie.category);
             } else {
                 console.warn("Skipping invalid movie data from localStorage:", movie);
             }
@@ -565,7 +565,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <section id="show-movie">
 			<span class="close-btn">&times;</span>
 			<div class="preview-image">
-				<img id="previewMovieImage" src="https://github.com/hiro011/movies-list/blob/main/default-movie.jpg?raw=true" alt="Show image">
+ 				<img id="previewMovieImage" src="${defaultImage}" alt="Show image">
 			</div>
 			<h2>Movie Name</h2>
 		</section>
