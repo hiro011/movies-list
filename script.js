@@ -224,12 +224,28 @@ document.addEventListener("DOMContentLoaded", function () {
 		
 		// Ensure movieId is unique and persistent
 		let movieId = localStorage.getItem("movieId") ? Number(localStorage.getItem("movieId")) : 5;
+		let imgPath = "";
+		
+		// Handle image upload
+		if (file) {
+			reader.onload = function (event) {
+				imgPath = event.target.result;
+			addGameToList(gameId, imgPath, name, link, category);
+			saveGame(gameId, imgPath, name, link, category);
+			};
+			
+			reader.readAsDataURL(file);
+		} else { 
+			imgPath = "https://github.com/hiro011/my-games/blob/main/default-game.jpeg?raw=true"; // defualt image
+			addGameToList(gameId, imgPath, name, link, category);
+			saveGame(gameId, imgPath, name, link, category);
+		}
 		
 		// Instead of storing Base64, save the file path or filename
-		let imgPath = file ? `images/${file.name}` : "images/default-movie.jpg";
+		//let imgPath = file ? `images/${file.name}` : "images/default-movie.jpg";
 		
-		addMovieToList(movieId, imgPath, name, link, category);
-		saveMovie(movieId, imgPath, name, link, category);
+		//addMovieToList(movieId, imgPath, name, link, category);
+		//saveMovie(movieId, imgPath, name, link, category);
 
 		// Increment and store new movieId
 		movieId++;
