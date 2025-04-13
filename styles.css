@@ -1,12 +1,20 @@
 /* General Styles */
 :root {
-	--clr-background: #f9f2fc; /* body */
 
-	--clr-primary: #8174A0;
-	--clr-secondary: #f0e9f5;
-	--clr-list: #edcafc;   /* list li */
+	/* --clr-primary: #8174A0; */
+	
+	/* --clr-background: #f9f2fc; /* body */ 
+	/* --clr-secondary: #f0e9f5; */
+	/* --clr-list: #edcafc;   /* list li */ 
+	
+	--clr-primary: #5837a6;
+	
+	--clr-background: #8174A0; /* body */
+	--clr-secondary: #9c93ad;
+	--clr-list: #A6AEBF;   /* list li */
+	
 	--clr-list-hover: #e5bcf7;   /* list li hover */
-	--clr-nav-a: #A888B5;  /* nav li a */
+	--clr-nav-a: #8967B3;  /* nav li a */
 	--clr-button: #A888B5;    /* search button */
 	--clr-hover: #d49dae;  /* button hover */
 	--clr-btn: #5f41a3;  /* button and text color */
@@ -133,7 +141,7 @@ button:hover {
     margin: 20px 50px 50px; /* T R/L B */
     padding: 20px;
     border-radius: 15px; 
-    box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.2); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  
     background: var(--clr-secondary);
 }
 
