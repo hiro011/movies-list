@@ -236,8 +236,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			
 			reader.readAsDataURL(file);
 		} else { 
-			//imgPath = "https://github.com/hiro011/movies-list/blob/main/default-movie.jpg?raw=true"; // defualt image
-			imgPath =  "images/default-movie.jpg";
+			imgPath = "https://github.com/hiro011/movies-list/blob/main/default-movie.jpg?raw=true"; // defualt image
 			addMovieToList(movieId, imgPath, name, link, category);
 			saveMovie(movieId, imgPath, name, link, category);
 		}
