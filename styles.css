@@ -1,23 +1,13 @@
 /* General Styles */
 :root {
-
-	/* --clr-primary: #8174A0; */
-	
-	/* --clr-background: #f9f2fc; /* body */ 
-	/* --clr-secondary: #f0e9f5; */
-	/* --clr-list: #edcafc;   /* list li */ 
-	
-	--clr-primary: #5837a6;
-	
+	--clr-navigation: #5837a6; /* header , footer */
 	--clr-background: #8174A0; /* body */
-	--clr-secondary: #9c93ad;
-	--clr-list: #A6AEBF;   /* list li */
+	--clr-container : #9c93ad; /* movie list container */
+	--clr-list: #A6AEBF;   /* movies card /list li */
+	--clr-btn: #704cc2;  /* button */
 	
-	--clr-list-hover: #e5bcf7;   /* list li hover */
-	--clr-nav-a: #8967B3;  /* nav li a */
-	--clr-button: #A888B5;    /* search button */
-	--clr-hover: #d49dae;  /* button hover */
-	--clr-btn: #5f41a3;  /* button and text color */
+	--clr-list-hover: #ac99f0;   /* list li hover */
+	--clr-btn-hover: #6707ed;  /* button hover */
 }
 
 body {
@@ -35,7 +25,7 @@ h1 {
 
 /* Header */
 header {
-    background: var(--clr-primary);
+    background: var(--clr-navigation);
     color: white;
     text-align: center;
     padding: 1rem 0;
@@ -43,7 +33,7 @@ header {
 }
 
 footer {
-    background: var(--clr-nav-a);
+    background: var(--clr-navigation);
     color: white;
     text-align: center;
     padding: 0.5rem 0;
@@ -55,7 +45,7 @@ footer {
     position: static;
     top: 0;
     width: 100%;
-    background: var(--clr-primary);
+    background: var(--clr-navigation);
     padding: 3px 0;
     z-index: 1000;
 }
@@ -77,14 +67,14 @@ nav ul li a {
     text-decoration: none;
     color: white;
     font-size: 1rem;
-    background: var(--clr-nav-a);
+    background: var(--clr-btn);
     padding: 10px 15px;
     border-radius: 20px;
     transition: 0.3s;
 }
 
 nav ul li a:hover {
-    background: var(--clr-hover);
+    background: var(--clr-btn-hover);
 }
 
 body.nav-fixed #add-movie {
@@ -98,7 +88,7 @@ body.nav-fixed #edit-movie {
 }
 
 button {
-    background: var(--clr-button);
+    background: var(--clr-btn);
     color: white;
     border: none;
     padding: 8px 15px;
@@ -108,14 +98,14 @@ button {
 }
 
 button:hover {
-    background: var(--clr-hover);
+    background: var(--clr-btn-hover);
 }
 
 /* ** START: Search Input Styling ** */
 .search-container {
     text-align: center; 
     padding: 5px 0 10px 0; 
-    background: var(--clr-primary); 
+    background: var(--clr-navigation); 
 }
 
 #search-input {
@@ -131,18 +121,18 @@ button:hover {
 
 #search-input:focus {
     outline: none;
-    border-color: var(--clr-hover); /* Highlight border on focus */
+    border-color: var(--clr-btn-hover); /* Highlight border on focus */
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 5px rgba(25, 118, 210, 0.5); /* Add outer glow on focus */
 }
 /* END: Search Input Styling */
 
 /* Sections */
 .movie-container {
-    margin: 20px 50px 50px; /* T R/L B */
+    margin: 20px 30px 30px; /* T R/L B */
     padding: 20px;
     border-radius: 15px; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  
-    background: var(--clr-secondary);
+    border: 1px solid #8174a0; 
+    background: var(--clr-container );
 }
 
 .movie-section {
@@ -188,7 +178,7 @@ button:hover {
 }
 
 .movie-list li a:hover {
-    color: var(--clr-hover);
+    color: var(--clr-btn-hover);
 }
 
 /* Responsive adjustments */
@@ -246,21 +236,14 @@ button:hover {
 }
 
 .edit-btn {
-    background: var(--clr-btn);
-    border: none;
-    color: white;
     border-radius: 5px;
-    cursor: pointer;
     padding: 5px 10px;
     margin-left: 10px;
 }
 
 .delete-btn {
     background: red;
-    border: none;
-    color: white;
     border-radius: 5px;
-    cursor: pointer;
     padding: 5px 10px;
     margin-left: 10px;
 }
@@ -272,18 +255,8 @@ button:hover {
 }
 
 #toggle-form-btn {
-    background: var(--clr-btn);
-    color: white;
     font-weight: bold;
     padding: 10px 20px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-#toggle-form-btn:hover {
-    background: var(--clr-hover);
 }
 
 /* pop-up form container */
@@ -371,18 +344,6 @@ button:hover {
     border-radius: 10px;
 }
 
-#add-movie button, #edit-movie button {
-    background: var(--clr-btn);
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-#add-movie button:hover, #edit-movie button:hover {
-    background: var(--clr-hover);
-}
-
 #add-movie h2, #edit-movie h2 {
 	margin: 10px;
 }
@@ -422,20 +383,10 @@ input[type="file"] {
 }
 
 
-#refresh-btn:hover {
-    background-color: var(--clr-hover);
-}
-
 #go-top-btn, #refresh-btn {
     position: fixed;
     bottom: 20px;
-    background-color: var(--clr-btn);
-    color: white;
-    border: none;
-    border-radius: 10px;
     padding: 10px;
-    cursor: pointer;
-    transition: 0.3s;
 	text-align: center;
 }
 
@@ -447,10 +398,6 @@ input[type="file"] {
 #go-top-btn {
     right: 100px;
 	display: none;
-}
-
-#go-top-btn:hover {
-    background-color: var(--clr-hover);
 }
 
 /* Smooth Scrolling */
@@ -465,18 +412,10 @@ html {
 }
 
 #download-html-btn {
-    background: var(--clr-btn);
-    color: white;
     font-weight: bold;
     padding: 10px 20px;
-    border: none;
     border-radius: 20px;
-    cursor: pointer;
-    transition: 0.3s;
 	margin-bottom: 50px;
 }
 
-#download-html-btn:hover {
-    background: var(--clr-hover);
-}
 
