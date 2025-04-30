@@ -4,10 +4,10 @@
 	--clr-background: #8174A0; /* body */
 	--clr-container : #9c93ad; /* movie list container */
 	--clr-list: #A6AEBF;   /* movies card /list li */
-	--clr-btn: #704cc2;  /* button */
+	--clr-btn: linear-gradient(135deg, #7320f7, #9f38a8); /* button: cyan to pink */
 	
 	--clr-list-hover: #ac99f0;   /* list li hover */
-	--clr-btn-hover: #6707ed;  /* button hover */
+	--clr-btn-hover: linear-gradient(135deg, #a921ed, #8040e6); /* brighter cyan to vibrant pink */
 }
 
 body {
@@ -69,12 +69,13 @@ nav ul li a {
     font-size: 1rem;
     background: var(--clr-btn);
     padding: 10px 15px;
-    border-radius: 20px;
-    transition: 0.3s;
+    transition: all 0.3s ease;
+    border-radius: 15px;
 }
 
 nav ul li a:hover {
     background: var(--clr-btn-hover);
+	border: 1px solid #ef23fe;
 }
 
 body.nav-fixed #add-movie {
@@ -92,13 +93,14 @@ button {
     color: white;
     border: none;
     padding: 8px 15px;
-    border-radius: 10px;
     cursor: pointer;
     transition: 0.3s;
+    border-radius: 10px;
 }
 
 button:hover {
     background: var(--clr-btn-hover);
+	border: 1px solid #1fa5de;
 }
 
 /* ** START: Search Input Styling ** */
