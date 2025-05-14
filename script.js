@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	const deleteMovieForm = document.getElementById("delete-movie");
     const deleteButton = document.getElementById("delete-b"); 
-	const defaultImage = "https://github.com/hiro011/movies-list/blob/main/default-movie.jpg?raw=true"; 
+	const defaultImage = "https://github.com/hiro011/movies-list/blob/fa6142d3369f89a7cd4ac80666b14a653dacaadc/default-movie.jpg"; 
 
     // Track currently editing movie
 	let currentEditingMovie = null;
