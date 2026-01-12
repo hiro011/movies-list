@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Movies</title>
+    <link rel="stylesheet" href="styles_settings.css">
+	<link rel="icon" type="image" href="images/cinema_1655698.png">
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			const headerBg = document.querySelector("header");
+			const goTopBtn = document.getElementById("go-top-btn");
+			const refreshBtn = document.getElementById("refresh-btn");
+			
+			// Init default setting value
+			defaultSet();
+			function defaultSet() {
+				const settings = JSON.parse(localStorage.getItem("settings_movie")) || {};
+				const defaultSettings = {
+					navBg: "images/background-img2.png",
+					theme: "purple",
+					defImg: "images/default-movie.jpg",
+					defLink: "https://ww1.goojara.to/"
+				};
+		
+				// Fill in any missing or null values with defaults
+				for (const key in defaultSettings) {
+					if (settings[key] == null) {
+						settings[key] = defaultSettings[key];
+					}
+				}
+
+				// Save back the updated settings (if anything was missing)
+				localStorage.setItem("settings_movie", JSON.stringify(settings));
+			}
+			
+			// Load nav images 
+			navImageInit();
+			function navImageInit() {
+				const settings = JSON.parse(localStorage.getItem("settings_movie")) || {};
+				const bg = settings.navBg || "images/background-img2.png";
+				headerBg.style.backgroundImage = `url("${bg}")`;
+			}
+			
+			refreshBtn.addEventListener("click", function () {
+				// Refresh the page
+				location.reload();
+			});
+			
+			goTopBtn.addEventListener("click", function () {
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+			});
+
+			window.addEventListener("scroll", function () {
+				if (window.scrollY > 250) {
+					goTopBtn.style.display = "block";
+				} else {
+					goTopBtn.style.display = "none";
+				} 
+			});
+			// initialise the theme
+			themeInit();
+			function themeInit(){
+			  const settings = JSON.parse(localStorage.getItem("settings_movie")) || {};
+			  const themeValue = settings.theme || "purple";
+			  
+			  const body = document.getElementById('main-body');
+			  
+			  // Remove any existing theme classes
+			  body.classList.remove('theme-green', 'theme-dark', 'theme-orange', 'theme-blue', 'theme-red');
+			  
+			  if (themeValue === 'purple') {
+				body.classList.remove('theme-green', 'theme-dark', 'theme-orange', 'theme-blue', 'theme-red');
+			  }else if (themeValue === 'green') {
+				body.classList.add('theme-green');
+			  } else if (themeValue === 'dark') {
+				body.classList.add('theme-dark');
+			  } else if (themeValue === 'orange') {
+				body.classList.add('theme-orange');
+			  }else if (themeValue === 'blue') {
+				body.classList.add('theme-blue');
+			  }else if (themeValue === 'red') {
+				body.classList.add('theme-red');
+			  }
+			}
+			
+		});
+	</script>
+
+	<style>
+		body {
+		  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+			Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+		}
+
+		.setting-container {
+		  max-width: 800px;
+		  margin: 40px auto;
+		  padding: 20px;
+		  background-color: rgba(255, 255, 255, 0.9);
+		  border-radius: 16px;
+		  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		}
+
+		.setting-group {
+		  margin-bottom: 32px;
+		  padding: 20px;
+		  border-left: 6px solid #3498db;
+		  background: #f9f9f9;
+		  border-radius: 12px;
+		}
+
+		.setting-group h2 {
+		  margin-bottom: 12px;
+		  font-size: 24px;
+		  color: #2c3e50;
+		  background: #e8f6ff;
+		  border-radius: 10px;
+		  padding: 10px;
+		  border-top: 1px solid #aec5e8;
+		  border-bottom: 1px solid #aec5e8;
+		}
+
+		.setting-group p {
+		  font-size: 18px;
+		  line-height: 1.6;
+		  color: #333;
+		}
+
+		.setting-group ul {
+		  margin-top: 10px;
+		  padding-left: 20px;
+		}
+
+		.setting-group ul li {
+		  margin-bottom: 8px;
+		  font-size: 18px;
+		  color: #555;
+		}
+
+		.setting-group a {
+		  color: #2980b9;
+		  text-decoration: none;
+		}
+
+		.setting-group a:hover {
+		  text-decoration: underline;
+		}
+
+	</style>
+
+</head>
+<body id="main-body">
+    <header>
+        <h1> About </h1>
+    </header>
+
+    <main>
+        <div class="btn-container"> 
+			<a href="movies.html" class="home-btn" >
+				<button>
+					Home
+				</button>
+			</a>
+			<a href="Settings.html" class="settings-btn" >
+				<button>
+					Settings
+				</button>
+			</a> 
+			<a href="about.html">
+				<button class="active-btn" >
+					About
+				</button>
+			</a>
+		</div> 
+		
+		<section class="setting-container">
+		  <div class="setting-group">
+			<h2>About</h2>
+			<p>
+			  <strong>Movie-List</strong> is a simple, local web application that lets you manage a personal library of your favorite movies.
+			  You can add, edit, delete, and rearrange movies with custom names, images, and links. No login or internet connection is needed after loading the site.
+			</p>
+		  </div>
+
+		  <div class="setting-group">
+			<h2>Storage</h2>
+			<p>
+			  All your data is stored in your browser using <strong>Local Storage</strong>, meaning:
+			</p>
+			<ul>
+			  <li>Your list is saved only on your device</li>
+			  <li>The data stays even after closing the browser</li>
+			  <li>Clearing browser storage will erase your movie list</li>
+			</ul>
+		  </div>
+
+		  <div class="setting-group">
+			<h2>Settings</h2>
+			<p>
+			  Use the Settings page to customize your experience:
+			</p>
+			<ul>
+			  <li>Change the navigation background image</li>
+			  <li>Set a default image and default link for new movies</li>
+			  <li>Choose from multiple color themes</li>
+			</ul>
+		  </div>
+
+			<div class="setting-group">
+			  <h2>My Other Works</h2>
+			  <p>I have other platforms/websites I built that you can check out:</p>
+			  <ul>
+				<li>
+				  <strong>Games List:</strong>
+				  A site to manage your favorite games, similar to the Movies List.
+				  <br>
+				  <a href="https://game-list-local.netlify.app/" target="_blank">
+					Visit Games List →
+				  </a>
+				</li>
+				<li>
+				  <strong>To-Do List:</strong>
+				  A task and project tracker to organize your daily activities.
+				  <br>
+				  <a href="https://todo-list-ahmed.netlify.app/" target="_blank">
+					Visit To-Do List →
+				  </a>
+				</li>
+			  </ul>
+			</div>
+
+		  <div class="setting-group">
+			<h2>Contact</h2>
+			<p>You can reach me through the following platforms:</p>
+			<ul>
+			  <li><strong>Email:</strong> mehamedseid002@gmail.com</li>
+			  <li><strong>Portfolio:</strong> <a href="https://ahmed-mehamedyesuf.netlify.app/" target="_blank">ahmed-mehamedyesuf.netlify.app</a></li>
+			  <li><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/ahmed-mehamedyesuf/" target="_blank">linkedin.com/in/ahmed-mehamedyesuf</a></li>
+			  <li><strong>Twitter:</strong> <a href="https://twitter.com/@Ahmed_Mehamed_" target="_blank">@Ahmed_Mehamed_</a></li>
+			  <li><strong>Telegram:</strong> <a href="https://t.me/@Ahmedmehamed" target="_blank">@Ahmedmehamed</a></li>
+			</ul>
+		  </div>
+		  
+		</section>
+
+
+		<button id="refresh-btn" class="refresh-btn" >Refresh</button>
+        <button id="go-top-btn" class="go-top-btn">↑ Go to Top</button>
+    </main>
+	
+	<footer>
+		<p>&copy; 2025 Ahmed Mehamedyesuf. All rights reserved.</p>
+	</footer>
+
+    <!-- <script src="script_about.js"></script> -->
+</body>
+</html>
