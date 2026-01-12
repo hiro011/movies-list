@@ -1,4 +1,4 @@
-const youtubeDefaultData = [
+const movieDefaultData = [
     {
         "id": 16,
         "imgPath": "images/Da Vinci's Demons (2013).jpg",
@@ -280,31 +280,31 @@ document.addEventListener('DOMContentLoaded', () => {
     if (importBtn) {
         importBtn.addEventListener('click', () => {
             // Confirmation Alert
-            const isConfirmed = confirm("Do you want to import the default channel list to your Local Storage?");
+            const isConfirmed = confirm("Do you want to import the default list to your Local Storage?");
 
             if (isConfirmed) {
-                let chans = JSON.parse(localStorage.getItem('chans')) || [];
+                let movies = JSON.parse(localStorage.getItem('movies')) || [];
                 let addedCount = 0;
 
-                youtubeDefaultData.forEach((item) => {
+                movieDefaultData.forEach((item) => {
                     // Check if ID already exists in LocalStorage to avoid duplicates
-                    const exists = chans.some(c => c.id === item.id);
+                    const exists = movies.some(c => c.id === item.id);
 
                     if (!exists) {
-                        chans.push(item);
+                        movies.push(item);
                         addedCount++;
                     }
                 });
 
                 if (addedCount > 0) {
                     // Save the updated list to LocalStorage
-                    localStorage.setItem('chans', JSON.stringify(chans));
+                    localStorage.setItem('movies', JSON.stringify(movies));
 
                     // Alert the user and refresh to show changes
-                    alert(`Successfully added ${addedCount} default channels! The page will now refresh.`);
+                    alert(`Successfully added ${addedCount} default movies! The page will now refresh.`);
                     window.location.reload();
                 } else {
-                    alert("All default channels are already in your list.");
+                    alert("All default movies are already in your list.");
                 }
             }
         });
