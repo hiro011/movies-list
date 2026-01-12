@@ -18,7 +18,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const previewEditImage = document.getElementById('previewEditImage');
     const toggleEditForm = document.querySelectorAll(".edit-btn");
 
-	const downloadBtn = document.getElementById("download-html-btn");
     const goTopBtn = document.getElementById("go-top-btn");
 	const refreshBtn = document.getElementById("refresh-btn");
     const searchInput = document.getElementById("search-input");
@@ -27,9 +26,100 @@ document.addEventListener("DOMContentLoaded", function () {
 	const MovieImgForm = document.getElementById('show-movie');
 	const showMovieImg = document.querySelectorAll('.show-image'); 
 
+	const exportMovieForm = document.getElementById("export-movie");
 	const deleteMovieForm = document.getElementById("delete-movie");
     const deleteButton = document.getElementById("delete-b"); 
-	const defaultImage = "https://github.com/hiro011/movies-list/blob/fa6142d3369f89a7cd4ac80666b14a653dacaadc/default-movie.jpg"; 
+	const headerBg = document.querySelector("header");
+
+
+	// Create hidden file input for JSON import
+	const importInput = document.createElement('input');
+	importInput.type = 'file';
+	importInput.accept = '.json';
+	importInput.style.display = 'none';
+	document.body.appendChild(importInput);
+
+	// Import button event listener
+	document.getElementById('import-btn').addEventListener('click', () => {
+	  importInput.click();
+	});
+	
+	// Handle file selection
+	importInput.addEventListener('change', (event) => {
+	  const file = event.target.files[0];
+	  if (!file) return;
+
+	  const reader = new FileReader();
+	  reader.onload = (e) => {
+		try {
+		  const importedMovies = JSON.parse(e.target.result);
+		  let movies = JSON.parse(localStorage.getItem('movies')) || [];
+
+		  // Merge imported movies, avoiding duplicates by ID
+		  importedMovies.forEach((importedMovie) => {
+			const existingIndex = movies.findIndex((movie) => movie.id === importedMovie.id);
+			if (existingIndex > -1) {
+			  // Update existing movie
+			  movies[existingIndex] = importedMovie;
+			} else {
+			  // Add new movie
+			  movies.push(importedMovie);
+			}
+			// Add to UI
+			addMovieToList(
+			  importedMovie.id,
+			  importedMovie.imgPath,
+			  importedMovie.name,
+			  importedMovie.link,
+			  importedMovie.category
+			);
+		  });
+
+		  // Save merged movies to localStorage
+		  localStorage.setItem('movies', JSON.stringify(movies));
+
+		  // Update movie ID counter
+		  const maxId = Math.max(...movies.map((movie) => movie.id), 5);
+		  localStorage.setItem('movieId', maxId + 1);
+
+		  // Update UI counts
+		  updateMovieCounts();
+
+		  // Reset file input
+		  importInput.value = '';
+		} catch (error) {
+		  alert('Error importing JSON: Invalid file format');
+		  console.error(error);
+		}
+	  };
+	  reader.readAsText(file);
+	});
+	
+	// show export popup
+	document.getElementById('export-btn').addEventListener('click', () => {
+		exportMovieForm.style.display = 'block';
+		overlay.style.display = 'block';
+		document.getElementById("export-b").focus();
+		document.body.classList.add('overlay-active'); 
+	});
+	//hide export popup
+	document.getElementById('cancel-e').addEventListener('click', () => {
+		hideForms();
+	});
+	
+	// export the data
+	document.getElementById('export-b').addEventListener('click', () => {
+	  const movies = JSON.parse(localStorage.getItem('movies')) || [];
+	  const jsonStr = JSON.stringify(movies, null, 2);
+	  const blob = new Blob([jsonStr], { type: 'application/json' });
+	  const url = URL.createObjectURL(blob);
+	  const a = document.createElement('a');
+	  a.href = url;
+	  a.download = 'movies-list.json';
+	  a.click();
+	  URL.revokeObjectURL(url);
+	  hideForms();
+	});
 
     // Track currently editing movie
 	let currentEditingMovie = null;
@@ -37,6 +127,43 @@ document.addEventListener("DOMContentLoaded", function () {
     loadMovies(); // Load saved movies/ Initialize
 	updateMovieCounts(); // Call this after loading movies
 
+	// Load images 
+	navImageInit();
+	function navImageInit() {
+		const settings = JSON.parse(localStorage.getItem("settings_movie")) || {};
+		const bg = settings.navBg || "images/background-img5.png";
+		headerBg.style.backgroundImage = `url("${bg}")`;
+	}
+	
+	// initialise the theme
+	themeInit();
+	function themeInit(){
+	  const settings = JSON.parse(localStorage.getItem("settings_movie")) || {};
+	  const themeValue = settings.theme || "purple";
+	  
+	  const body = document.getElementById('main-body');
+	  
+	  // Remove any existing theme classes
+	  body.classList.remove('theme-green', 'theme-dark', 'theme-orange', 'theme-blue');
+	  
+	  if (themeValue === 'purple') {
+		body.classList.remove('theme-green', 'theme-dark', 'theme-orange', 'theme-blue');
+	  }
+	  
+	  // Add the selected theme
+	  if (themeValue === 'green') {
+		body.classList.add('theme-green');
+	  } else if (themeValue === 'dark') {
+		body.classList.add('theme-dark');
+	  } else if (themeValue === 'orange') {
+		body.classList.add('theme-orange');
+	  }else if (themeValue === 'blue') {
+		body.classList.add('theme-blue');
+	  }else if (themeValue === 'red') {
+		body.classList.add('theme-red');
+	  }
+	}
+	
 	// Show delete popup form 
 	function showDeletePopup() {
 		deleteMovieForm.style.display = 'block';
@@ -76,6 +203,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	function hideForms() {
         addMovieForm.style.display = 'none';
         editMovieForm.style.display = 'none';
+		exportMovieForm.style.display = 'none';
 		deleteMovieForm.style.display = 'none';
 		MovieImgForm.style.display = 'none';
         overlay.style.display = 'none';
@@ -169,15 +297,22 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     window.addEventListener("scroll", function () {
+		const navBar = document.getElementById("nav-bar");
+		const settings = JSON.parse(localStorage.getItem("settings_movie")) || {};
+		const bg = settings.navBg || "images/background-img5.png";
+		
         if (window.scrollY > 250) {
             goTopBtn.style.display = "block";
         } else {
             goTopBtn.style.display = "none";
         } 
+		
 		if (window.scrollY > 130) {
-			document.getElementById("nav-bar").style.position = "fixed";
+			navBar.style.position = "fixed";
+			navBar.style.backgroundImage = `url("${bg}")`;
         } else {
-			document.getElementById("nav-bar").style.position = "static";
+			navBar.style.position = "static";
+			navBar.style.backgroundImage = "none";
         }
     });
  
@@ -212,40 +347,27 @@ document.addEventListener("DOMContentLoaded", function () {
 		const category = movieCategorySelect.value;
 		const reader = new FileReader();
 		const file = imageUpload.files[0];
-
+		const settings = JSON.parse(localStorage.getItem("settings_movie")) || {};
+		const defImage = settings.defImg || "images/default-movie.jpg";
+		const defLnk = settings.defLink || "https://ww1.goojara.to/";
+		
 		if (name === "") {
 			alert("Please enter a movie name!");
 			return;
 		}
 		
 		if (link === "") {
-			link = "https://ww1.goojara.to/";
+			link = defLnk;
 		}
 		
 		// Ensure movieId is unique and persistent
 		let movieId = localStorage.getItem("movieId") ? Number(localStorage.getItem("movieId")) : 5;
-		let imgPath = "";
-		
-		// Handle image upload
-		if (file) {
-			reader.onload = function (event) {
-				imgPath = event.target.result;
-			addMovieToList(movieId, imgPath, name, link, category);
-			saveMovie(movieId, imgPath, name, link, category);
-			};
-			
-			reader.readAsDataURL(file);
-		} else { 
-			imgPath = defaultImage; // defualt image
-			addMovieToList(movieId, imgPath, name, link, category);
-			saveMovie(movieId, imgPath, name, link, category);
-		}
 		
 		// Instead of storing Base64, save the file path or filename
-		//let imgPath = file ? `images/${file.name}` : "images/default-movie.jpg";
+		let imgPath = file ? `images/${file.name}` : defImage;
 		
-		//addMovieToList(movieId, imgPath, name, link, category);
-		//saveMovie(movieId, imgPath, name, link, category);
+		addMovieToList(movieId, imgPath, name, link, category);
+		saveMovie(movieId, imgPath, name, link, category);
 
 		// Increment and store new movieId
 		movieId++;
@@ -285,7 +407,7 @@ document.addEventListener("DOMContentLoaded", function () {
 					<option value="plan-to">Plan To</option>
 					<option value="on-hold">On Hold</option>
 					<option value="maybe">Maybe</option>
-					<option value="completed">Completed</option>
+					<option value="watched">Watched</option>
 				</select>
 				<button class="edit-btn">✏️</button>
 				<button class="delete-btn">🗑</button>
@@ -395,21 +517,21 @@ document.addEventListener("DOMContentLoaded", function () {
         const planToCountSpan = document.getElementById('plan-to-count');
         const onHoldCountSpan = document.getElementById('on-hold-count');
         const maybeCountSpan = document.getElementById('maybe-count');
-        const completedCountSpan = document.getElementById('completed-count');
+        const watchedCountSpan = document.getElementById('watched-count');
         const totalCountSpan = document.getElementById('total-count');
 
         const watchingCount = document.getElementById('watching-list').children.length;
         const planToCount = document.getElementById('plan-to-list').children.length;
         const onHoldCount = document.getElementById('on-hold-list').children.length;
         const maybeCount = document.getElementById('maybe-list').children.length;
-        const completedCount = document.getElementById('completed-list').children.length;
-        const totalCount = watchingCount + planToCount + onHoldCount + completedCount + maybeCount;
+        const watchedCount = document.getElementById('watched-list').children.length;
+        const totalCount = watchingCount + planToCount + onHoldCount + watchedCount + maybeCount;
 
         watchingCountSpan.textContent = watchingCount;
         planToCountSpan.textContent = planToCount;
         onHoldCountSpan.textContent = onHoldCount;
         maybeCountSpan.textContent = maybeCount;
-        completedCountSpan.textContent = completedCount;
+        watchedCountSpan.textContent = watchedCount;
         totalCountSpan.textContent = totalCount;
     }
 	
@@ -511,176 +633,17 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('plan-to-list').innerHTML = '';
         document.getElementById('on-hold-list').innerHTML = '';
         document.getElementById('maybe-list').innerHTML = '';
-        document.getElementById('completed-list').innerHTML = '';
+        document.getElementById('watched-list').innerHTML = '';
 
 		movies.forEach(movie => {
             // Ensure valid data before adding
             if (movie && movie.id != null && movie.name && movie.category) {
-                 addMovieToList(movie.id, movie.imgPath || defaultImage, movie.name, movie.link || "#", movie.category);
+                 addMovieToList(movie.id, movie.imgPath || "images/default-movie.jpg", movie.name, movie.link || "#", movie.category);
             } else {
                 console.warn("Skipping invalid movie data from localStorage:", movie);
             }
         });
         updateMovieCounts(); // Call updateMovieCounts here
 	}
-
-    // Download Updated HTML File
-	downloadBtn.addEventListener("click", function () {
-        let movies = JSON.parse(localStorage.getItem("movies")) || [];
-
-        // Generate updated HTML content
-        let htmlContent = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movies</title>
-    <link rel="stylesheet" href="styles.css">
-	<link rel="icon" type="image" href="images/cinema_1655698.png">
-</head>
-
-<body>
-    <header>
-        <h1>Movies - <span class="movie-count" id="total-count">0</span></h1>
-		<div class="search-container">
-            <input type="text" id="search-input" placeholder="🔍 Search movies...">
-            <button id="clear-search" >clear</button>
-        </div>
-        <nav id="nav-bar">
-            <ul>
-                <li><a href="#watching">Watching</a></li>
-                <li><a href="#plan-to">Plan To</a></li>
-                <li><a href="#on-hold">On Hold</a></li>
-                <li><a href="#maybe">Maybe</a></li>
-                <li><a href="#completed">Completed</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main>		
-		<!-- Overlay (background) -->
-		<div class="overlay" id="overlay"></div>
-		
-        <section id="show-movie">
-			<span class="close-btn">&times;</span>
-			<div class="preview-image">
- 				<img id="previewMovieImage" src="${defaultImage}" alt="Show image">
-			</div>
-			<h2>Movie Name</h2>
-		</section>
-		
-        <section id="watching" class="movie-container">
-			<div class="movie-section">
-				<h2>Watching - <span class="movie-count" id="watching-count">0</span></h2>
-				<ul class="movie-list" id="watching-list">
-					${movies.filter(g => g.category === "watching").map(g => `
-					<li data-movie-name="${g.name}">
-						<div class="movie-image">
-							<img class="show-image" src="${g.imgPath}" alt="${g.name}">
-						</div>
-						<div class="movie-names">
-							<a href="${g.link}" target="_blank">${g.name}</a>
-						</div>
-					</li>
-					`).join("")}
-				</ul>
-			</div>
-        </section>
-
-        <section id="plan-to" class="movie-container">
-			<div class="movie-section">
-				<h2>Plan To - <span class="movie-count" id="plan-to-count">0</span></h2>
-				<ul class="movie-list" id="plan-to-list">
-					${movies.filter(g => g.category === "plan-to").map(g => `
-					<li data-movie-name="${g.name}">
-						<div class="movie-image">
-							<img class="show-image" src="${g.imgPath}" alt="${g.name}">
-						</div>
-						<div class="movie-names">
-							<a href="${g.link}" target="_blank">${g.name}</a>
-						</div>
-					</li>
-					`).join("")}
-				</ul>
-			</div>
-        </section>
-		
-        <section id="on-hold" class="movie-container">
-			<div class="movie-section">
-				<h2>On Hold - <span class="movie-count" id="on-hold-count">0</span></h2>
-				<ul class="movie-list" id="on-hold-list">
-					${movies.filter(g => g.category === "on-hold").map(g => `
-					<li data-movie-name="${g.name}">
-						<div class="movie-image">
-							<img class="show-image" src="${g.imgPath}" alt="${g.name}">
-						</div>
-						<div class="movie-names">
-							<a href="${g.link}" target="_blank">${g.name}</a>
-						</div>
-					</li>
-					`).join("")}
-				</ul>
-			</div>
-        </section>
-
-        <section id="maybe" class="movie-container">
-			<div class="movie-section">
-				<h2>Maybe - <span class="movie-count" id="maybe-count">0</span></h2>
-				<ul class="movie-list" id="maybe-list">
-					${movies.filter(g => g.category === "maybe").map(g => `
-					<li data-movie-name="${g.name}">
-						<div class="movie-image">
-							<img class="show-image" src="${g.imgPath}" alt="${g.name}">
-						</div>
-						<div class="movie-names">
-							<a href="${g.link}" target="_blank">${g.name}</a>
-						</div>
-					</li>
-					`).join("")}
-				</ul>
-			</div>
-        </section>
-
-        <section id="completed" class="movie-container">
-			<div class="movie-section">
-				<h2>Completed - <span class="movie-count" id="completed-count">0</span></h2>
-				<ul class="movie-list" id="completed-list">
-					${movies.filter(g => g.category === "completed").map(g => `
-					<li data-movie-name="${g.name}">
-						<div class="movie-image">
-							<img class="show-image" src="${g.imgPath}" alt="${g.name}">
-						</div>
-						<div class="movie-names">
-							<a href="${g.link}" target="_blank">${g.name}</a>
-						</div>
-					</li>
-					`).join("")}
-				</ul>
-			</div>
-        </section>
-		
-		<button id="refresh-btn" class="refresh-btn" >Refresh</button>
-        <button id="go-top-btn" class="go-top-btn">↑ Go to Top</button>
-    </main>
-	
-	<footer>
-		<p>&copy; 2025 Ahmed Mehamedyesuf. All rights reserved.</p>
-	</footer>
-	
-    <script src="script2.js"></script>
-</body>
-</html>
-	`;
-
-        // Create a Blob and trigger download
-        const blob = new Blob([htmlContent], { type: "text/html" });
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(blob);
-        a.download = "movies-data.html";
-        document.body.prepend(a);
-        a.click();
-        document.body.removeChild(a);
-    });
-	
+ 
 });

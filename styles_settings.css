@@ -1,0 +1,285 @@
+/* Settings Styles */
+
+:root {
+	--clr-footer: #5837a6; /* header , footer */
+	--clr-background: #8174A0; /* body */
+	--clr-container : #9c93ad; /* movie list container */
+	--clr-btn-cont: #c48de0;   /* nav btn container */
+	--clr-btn: #8e44ad;
+	--clr-btn-hover: #9b59b6;
+}
+
+.theme-green {
+	--clr-footer: linear-gradient(135deg, #2e7d32, #43a047); /* forest to leaf green */
+	--clr-background: #dcedc8; /* pale green */
+	--clr-container : #e6f4ea; /* light mint */
+	--clr-btn: #73c178;
+	--clr-btn-cont: #9be8b0;   /* nav btn container */
+	--clr-btn-hover: #4ddfb8;
+}
+
+.theme-orange {
+	--clr-footer: linear-gradient(135deg, #ef6c00, #fb8c00); /* deep orange blend */
+	--clr-background: #ffe0b2; /* light apricot */
+	--clr-container : #ffecb3; /* pale amber */
+	--clr-btn-cont: #f0da78;   /* nav btn container */
+	--clr-btn: #ffad3b;
+	--clr-btn-hover: #ff7a54;
+}
+
+.theme-dark {
+	--clr-footer: linear-gradient(135deg, #212121, #424242); /* dark grey tones */
+	--clr-background: #121212; /* near-black */
+	--clr-container : #1e1e1e; /* slightly lighter for containers */
+	--clr-btn: #4f5abc;
+	--clr-btn-cont: #3a4047;   /* nav btn container */
+	--clr-btn-hover: #13b9d0;
+}
+
+.theme-blue {
+	--clr-footer: linear-gradient(135deg, #0d47a1, #1565c0); /* header, footer */
+	--clr-background: #abd0eb; /* body */
+	--clr-container : #cbe2f2; /* game list container */
+	--clr-btn: #1ba0df; 
+	--clr-btn-cont: #8ab3d4;   /* nav btn container */
+	--clr-btn-hover: #4ddfb8; 
+}
+
+.theme-red {
+	--clr-footer: linear-gradient(135deg, #c62828, #e53935); /* deep red to vibrant red */
+	--clr-background: #f8d7da; /* soft rose background */
+	--clr-container: #fdecea; /* very light pink */
+	--clr-btn: #ec6261;
+	--clr-btn-cont: #e08d99;   /* nav btn container */
+	--clr-btn-hover: #ff9a88;
+}
+
+.t-blue {
+	background-color: #1ba0df;
+}
+.t-dark{
+	background-color: #4f5abc;
+}
+.t-orange{
+	background-color: #ffad3b;
+}
+.t-green{
+	background-color: #73c178;
+}
+.t-purple{
+	background-color: #b357c2;
+}
+.t-red{
+	background-color: #ec6261;
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--clr-background);
+    color: #333;
+	text-align: center;
+}
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Header */
+header {
+	position: relative;
+	background-image: url('images/background-img2.png');
+    background-size: cover;        /* Ensures the image covers the full nav */
+    background-repeat: no-repeat;  /* Prevents tiling */
+    background-position: center;   /* Centers the image */
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+	height: 185px;
+}
+
+footer {
+    background: var(--clr-footer);
+    color: white;
+    text-align: center;
+    padding: 0.5rem 0;
+}
+
+button {
+    background-color: var(--clr-btn);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 10px;	
+    text-decoration: none;
+}
+
+button:hover {
+    background-color: var(--clr-btn-hover);
+	border: 1px solid #148516;
+}
+
+/* Home Button */
+.btn-container {
+    text-align: center;
+    padding: 10px 0; 
+	background-color: var(--clr-btn-cont);
+}
+
+.btn-container a {
+	text-decoration: none;
+}
+
+.btn-container button {
+	background: none;
+}
+
+.btn-container button:hover {
+    background: var(--clr-btn);
+	border: none;
+}
+
+.btn-container .active-btn{
+    background: var(--clr-btn);
+}
+
+input[type="file"] {
+    margin: 10px 0;
+	max-width: 300px;
+	padding: 10px;
+    margin: 5px;
+    border: 1px solid #0d47a1;
+    border-radius: 10px;
+	cursor: pointer;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+  margin-bottom: 15px;
+}
+
+input[type="text"]:focus {
+  border-color: #4a90e2;
+  outline: none;
+}
+
+#go-top-btn, #refresh-btn {
+    position: fixed;
+	bottom: 20px;
+    padding: 10px;
+	text-align: center;
+}
+
+#go-top-btn {
+    right: 100px;
+	display: none;
+}
+
+#refresh-btn {
+    right: 30px;
+	z-index: 1100; /* Ensure it's above the overlay */
+}
+
+.setting-container {
+  max-width: 600px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: sans-serif; 
+  margin: 20px auto 30px; /* T R/L B */ 
+    border-radius: 15px;
+    border: 1px solid #3387e8; 
+    background-color: var(--clr-container);
+}
+
+.preview {
+	margin: auto;
+	width: 50%;
+	padding: 10px;
+}
+
+.preview img {
+    display: none;
+    width: 100%;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+.preview img[src] {
+    display: block;
+}
+
+.setting-group {
+  margin-bottom: 30px;
+}
+
+.setting-group h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #0d47a1;
+    text-align: center;
+    border-bottom: 1px solid #0d47a1;
+    padding-bottom: 5px;
+}
+
+.option-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.nav-bg-1 {
+	background-image: url('images/background-img1.png');
+	background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.nav-bg-2 {
+	background-image: url('images/background-img2.png');
+	background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.nav-bg-3 {
+	background-image: url('images/background-img3.png');
+	background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.nav-bg-4 {
+	background-image: url('images/background-img4.png');
+	background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.nav-bg-5 {
+	background-image: url('images/background-img5.png');
+	background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.nav-bg-1:hover, .nav-bg-2:hover, .nav-bg-3:hover, .nav-bg-4:hover, .nav-bg-5:hover {
+    transform: scale(1.03);
+	color: #333;
+}
+
+.option-list button {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  transition: background 0.3s;
+}
+

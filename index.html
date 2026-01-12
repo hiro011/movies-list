@@ -5,13 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movies</title>
     <link rel="stylesheet" href="styles.css">
-	<link rel="icon" type="image" href="https://github.com/hiro011/movies-list/blob/main/cinema_1655698.png?raw=true">
+	<link rel="icon" type="image" href="images/cinema_1655698.png">
 
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
 			const editImageUpload = document.getElementById('editImageUpload');
 			const previewEditImage = document.getElementById('previewEditImage');
 			
+			// Init default setting value
+			defaultSet();
+			function defaultSet() {
+				const settings = JSON.parse(localStorage.getItem("settings_movie")) || {};
+				const defaultSettings = {
+					navBg: "images/background-img2.png",
+					theme: "purple",
+					defImg: "images/default-movie.jpg",
+					defLink: "https://ww1.goojara.to/"
+				};
+				
+				for (const key in defaultSettings) {
+					if (settings[key] == null) {
+						settings[key] = defaultSettings[key];
+					}
+				}
+
+				// Save back the updated settings (if anything was missing)
+				localStorage.setItem("settings_movie", JSON.stringify(settings));
+			}		
 			if (editImageUpload && previewEditImage) {
 				editImageUpload.addEventListener('change', function(event) {
 					const file = event.target.files[0];
@@ -28,7 +48,7 @@
 	</script>
 </head>
 
-<body>
+<body id="main-body">
     <header>
         <h1>Movies - <span class="movie-count" id="total-count">0</span></h1>
 		<div class="search-container">
@@ -41,14 +61,33 @@
                 <li><a href="#plan-to">Plan To</a></li>
                 <li><a href="#on-hold">On Hold</a></li>
                 <li><a href="#maybe">Maybe</a></li>
-                <li><a href="#completed">Completed</a></li>
+                <li><a href="#watched">Watched</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
+		<div class="btn-container">
+			<a href="index.html">
+				<button class="active-btn">
+					Home
+				</button>
+			</a>
+			<a href="Settings.html" class="settings-btn" >
+				<button>
+					Settings
+				</button>
+			</a>
+			<a href="about.html" class="about-btn" >
+				<button>
+					About
+				</button>
+			</a>
+		</div>
         <div class="add-movie-container"> 
             <button id="toggle-form-btn" >➕ Add New Movie</button>
+			<button id="import-btn">Import</button>
+			<button id="export-btn">Export</button>
         </div> 
             		
 		<!-- Overlay (background) -->
@@ -57,7 +96,7 @@
         <section id="show-movie">
 			<span class="close-btn">&times;</span>
 			<div class="preview-image">
-				<img id="previewMovieImage" src="images/default-movie.jpeg" alt="Show image">
+				<img id="previewMovieImage" src="images/default-movie.jpg" alt="Show image">
 			</div>
 			<h2>Movie Name</h2>
 		</section>
@@ -84,7 +123,7 @@
 					<option value="plan-to">Plan To</option>
 					<option value="on-hold">On Hold</option>
 					<option value="maybe">Maybe</option>
-					<option value="completed">Completed</option>
+					<option value="watched">Watched</option>
 				</select>
 				<button id="add-movie-btn">Add Movie</button>
 			</div>
@@ -96,6 +135,15 @@
 				
 				<button id="delete-b">Delete</button>
 				<button id="cancel-b">Cancel</button>
+			</div>
+		</section>
+		
+        <section id="export-movie">
+			<div>
+				<h3>Export the movies list as JSON file</h3>
+				
+				<button id="export-b">export</button>
+				<button id="cancel-e">Cancel</button>
 			</div>
 		</section>
 
@@ -148,7 +196,7 @@
 								<option value="plan-to">Plan To</option>
 								<option value="on-hold">On Hold</option>
 								<option value="maybe">Maybe</option>
-								<option value="completed">Completed</option>
+								<option value="watched">Watched</option>
 							</select>
 							<button class="edit-btn">✏️</button>
 							<button class="delete-btn">🗑</button>
@@ -176,18 +224,14 @@
 			</div>
         </section>
 
-        <section id="completed" class="movie-container">
+        <section id="watched" class="movie-container">
 			<div class="movie-section">
-				<h2>Completed - <span class="movie-count" id="completed-count">0</span></h2>
-				<ul class="movie-list" id="completed-list">
+				<h2>Watched - <span class="movie-count" id="watched-count">0</span></h2>
+				<ul class="movie-list" id="watched-list">
 					
 				</ul>
 			</div>
         </section>
-		
-		<div class="download-container">
-            <button id="download-html-btn">📥 Download Updated HTML</button>
-        </div>
 		
 		<button id="refresh-btn" class="refresh-btn" >Refresh</button>
         <button id="go-top-btn" class="go-top-btn">↑ Go to Top</button>
