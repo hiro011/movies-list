@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Movies</title>
+    <link rel="stylesheet" href="styles_settings.css">
+	<link rel="icon" type="image" href="images/cinema_1655698.png">
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			const imgUploadDef = document.getElementById('imageUploadDef');
+			const previewDefImg = document.getElementById('previewDefImage');
+			
+			if (imgUploadDef && previewDefImg) {
+				imgUploadDef.addEventListener('change', function(event) {
+					const file = event.target.files[0];
+					if (file) {
+						const reader = new FileReader();
+						reader.onload = function(e) {
+							previewDefImg.src = e.target.result;
+						};
+						reader.readAsDataURL(file);
+					}
+				});
+			}
+		});
+	</script>
+</head>
+<body id="main-body">
+    <header>
+        <h1> Settings </h1>
+    </header>
+
+    <main>
+        <div class="btn-container"> 
+			<a href="index.html" class="home-btn" >
+				<button>
+					Home
+				</button>
+			</a>
+			<a href="Settings.html">
+				<button class="active-btn" >
+					Settings
+				</button>
+			</a>
+			<a href="about.html" class="about-btn" >
+				<button>
+					About
+				</button>
+			</a>
+		</div> 
+		<section class="setting-container">
+		  <div class="setting-group">
+			<h2>Navigation Background</h2>
+			<ul class="option-list">
+			  <li><button class="nav-bg-1" id="nav-bg-1">Naruto & Luffy</button></li>
+			  <li><button class="nav-bg-2" id="nav-bg-2">Clarence</button></li>
+			  <li><button class="nav-bg-3" id="nav-bg-3">Rick & Morty</button></li>
+			  <li><button class="nav-bg-4" id="nav-bg-4">Frieren</button></li>
+			  <li><button class="nav-bg-5" id="nav-bg-5">Ghibli</button></li>
+			</ul>
+			<input type="file" id="imageUploadNav" accept="image/*">
+		  </div>
+
+		  <div class="setting-group">
+			<h2>Change Theme</h2>
+			<ul class="option-list">
+			  <li><button class="t-blue" id="theme-blue">Blue</button></li>
+			  <li><button class="t-dark" id="theme-dark"> Dark </button></li>
+			  <li><button class="t-orange" id="theme-orange">Orange</button></li>
+			  <li><button class="t-green" id="theme-green">Green</button></li>
+			  <li><button class="t-purple" id="theme-purple">Purple</button></li>
+			  <li><button class="t-red" id="theme-red">Red</button></li>
+			</ul>
+		  </div>
+
+		  <div class="setting-group">
+			<h2>Change Default Image</h2>
+			<input type="file" id="imageUploadDef" accept="image/*">
+		  </div>
+		  
+		  <div class="preview">
+			<img id="previewDefImage" src="images/default-movie.jpg" alt="Image Preview">
+		  </div>
+		  
+		  <button id="def-img-btn"> save </button>
+
+		  <div class="setting-group">
+			<h2>Change Default Link</h2>
+			<input type="text" id="def-link" placeholder="Enter default link">
+			<button id="def-link-btn"> save </button>
+		  </div>
+		</section>
+
+		<button id="refresh-btn" class="refresh-btn" >Refresh</button>
+        <button id="go-top-btn" class="go-top-btn">↑ Go to Top</button>
+    </main>
+	
+	<footer>
+		<p>&copy; 2025 Ahmed Mehamedyesuf. All rights reserved.</p>
+	</footer>
+
+    <script src="script_settings.js"></script>
+</body>
+</html>

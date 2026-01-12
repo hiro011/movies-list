@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies</title>
+    <link rel="stylesheet" href="styles.css">
+	<link rel="icon" type="image" href="images/cinema_1655698.png">
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			const editImageUpload = document.getElementById('editImageUpload');
+			const previewEditImage = document.getElementById('previewEditImage');
+			
+			// Init default setting value
+			defaultSet();
+			function defaultSet() {
+				const settings = JSON.parse(localStorage.getItem("settings_movie")) || {};
+				const defaultSettings = {
+					navBg: "images/background-img2.png",
+					theme: "purple",
+					defImg: "images/default-movie.jpg",
+					defLink: "https://ww1.goojara.to/"
+				};
+				
+				for (const key in defaultSettings) {
+					if (settings[key] == null) {
+						settings[key] = defaultSettings[key];
+					}
+				}
+
+				// Save back the updated settings (if anything was missing)
+				localStorage.setItem("settings_movie", JSON.stringify(settings));
+			}		
+			if (editImageUpload && previewEditImage) {
+				editImageUpload.addEventListener('change', function(event) {
+					const file = event.target.files[0];
+					if (file) {
+						const reader = new FileReader();
+						reader.onload = function(e) {
+							previewEditImage.src = e.target.result;
+						};
+						reader.readAsDataURL(file);
+					}
+				});
+			}
+		});
+	</script>
+</head>
+
+<body id="main-body">
+    <header>
+        <h1>Movies - <span class="movie-count" id="total-count">0</span></h1>
+		<div class="search-container">
+            <input type="text" id="search-input" placeholder="🔍 Search movies...">
+            <button id="clear-search" >clear</button>
+        </div>
+        <nav id="nav-bar">
+            <ul>
+                <li><a href="#watching">Watching</a></li>
+                <li><a href="#plan-to">Plan To</a></li>
+                <li><a href="#on-hold">On Hold</a></li>
+                <li><a href="#maybe">Maybe</a></li>
+                <li><a href="#watched">Watched</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+		<div class="btn-container">
+			<a href="index.html">
+				<button class="active-btn">
+					Home
+				</button>
+			</a>
+			<a href="Settings.html" class="settings-btn" >
+				<button>
+					Settings
+				</button>
+			</a>
+			<a href="about.html" class="about-btn" >
+				<button>
+					About
+				</button>
+			</a>
+		</div>
+        <div class="add-movie-container"> 
+            <button id="toggle-form-btn" >➕ Add New Movie</button>
+			<button id="import-btn">Import</button>
+			<button id="export-btn">Export</button>
+        </div> 
+            		
+		<!-- Overlay (background) -->
+		<div class="overlay" id="overlay"></div>
+		
+        <section id="show-movie">
+			<span class="close-btn">&times;</span>
+			<div class="preview-image">
+				<img id="previewMovieImage" src="images/default-movie.jpg" alt="Show image">
+			</div>
+			<h2>Movie Name</h2>
+		</section>
+
+        <section id="add-movie">
+			<span class="close-btn">&times;</span>
+			<div id="popupFormFields">
+				<h2>Add a New Movie</h2>
+				<div class="upload-container">
+					<div class="upload-img">
+						<h2>Upload Image</h2>
+						<input type="file" id="imageUpload" accept="image/*">
+					</div>
+					<div class="preview">
+						<img id="previewAddImage" src="" alt="Image Preview">
+					</div>
+				</div>
+				
+				<input type="text" id="movie-name" placeholder="Enter movie name" required>
+				<input type="text" id="movie-link" placeholder="Enter movie link" required>
+				
+				<select id="movie-category">
+					<option value="watching">Watching</option>
+					<option value="plan-to">Plan To</option>
+					<option value="on-hold">On Hold</option>
+					<option value="maybe">Maybe</option>
+					<option value="watched">Watched</option>
+				</select>
+				<button id="add-movie-btn">Add Movie</button>
+			</div>
+		</section>
+
+        <section id="delete-movie">
+			<div id="popupFormFields">
+				<h3>Are you sure you want to delete "Movie name"?</h3>
+				
+				<button id="delete-b">Delete</button>
+				<button id="cancel-b">Cancel</button>
+			</div>
+		</section>
+		
+        <section id="export-movie">
+			<div>
+				<h3>Export the movies list as JSON file</h3>
+				
+				<button id="export-b">export</button>
+				<button id="cancel-e">Cancel</button>
+			</div>
+		</section>
+
+		<section id="edit-movie">
+			<span class="close-btn">&times;</span>
+			<div id="popupEditFields">
+				<h2>Edit Movie</h2>
+				<div class="upload-container">
+					<div class="upload-img">
+						<h2>Upload Image</h2>
+						<input type="file" id="editImageUpload" accept="image/*">
+					</div>
+					<div class="preview">
+						<img id="previewEditImage" src="" alt="Image Preview">
+					</div>
+				</div>
+				
+				<input type="text" id="edit-name" placeholder="Enter movie name">
+				<input type="text" id="edit-link" placeholder="Enter movie link">
+				 
+				<button id="edit-movie-btn">Edit Movie</button>
+			</div>
+		</section>
+		
+        <section id="watching" class="movie-container">
+			<div class="movie-section">
+				<h2>Watching - <span class="movie-count" id="watching-count">0</span></h2>
+
+				<ul class="movie-list" id="watching-list">
+					
+				</ul>
+			</div>
+        </section>
+
+        <section id="plan-to" class="movie-container">
+			<div class="movie-section">
+				<h2>Plan To - <span class="movie-count" id="plan-to-count">0</span></h2>
+				<ul class="movie-list" id="plan-to-list">
+					<li>
+						<div class="movie-image">
+							<img class="show-image" src="images/Final Space (7).jpg" alt="final space">
+						</div>
+						<div class="movie-names">
+							<a href="https://ww1.goojara.to/t7MdDV" target="_blank">final space</a>
+						</div>
+						<div class="movie-btn">
+							<select class="move-dropdown">
+								<option value="">Move to...</option>
+								<option value="watching">Watching</option>
+								<option value="plan-to">Plan To</option>
+								<option value="on-hold">On Hold</option>
+								<option value="maybe">Maybe</option>
+								<option value="watched">Watched</option>
+							</select>
+							<button class="edit-btn">✏️</button>
+							<button class="delete-btn">🗑</button>
+						</div>
+					</li>
+				</ul>
+			</div>
+        </section>
+		
+        <section id="on-hold" class="movie-container">
+			<div class="movie-section">
+				<h2>On Hold - <span class="movie-count" id="on-hold-count">0</span></h2>
+				<ul class="movie-list" id="on-hold-list">
+					
+				</ul>
+			</div>
+        </section>
+
+        <section id="maybe" class="movie-container">
+			<div class="movie-section">
+				<h2>Maybe - <span class="movie-count" id="maybe-count">0</span></h2>
+				<ul class="movie-list" id="maybe-list">
+					
+				</ul>
+			</div>
+        </section>
+
+        <section id="watched" class="movie-container">
+			<div class="movie-section">
+				<h2>Watched - <span class="movie-count" id="watched-count">0</span></h2>
+				<ul class="movie-list" id="watched-list">
+					
+				</ul>
+			</div>
+        </section>
+		
+		<button id="refresh-btn" class="refresh-btn" >Refresh</button>
+        <button id="go-top-btn" class="go-top-btn">↑ Go to Top</button>
+    </main>
+	
+	<footer>
+		<p>&copy; 2025 Ahmed Mehamedyesuf. All rights reserved.</p>
+	</footer>
+	
+    <script src="script.js"></script>
+</body>
+</html>
