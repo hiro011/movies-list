@@ -97,7 +97,7 @@ h1 {
 /* Header */
 header {
 	position: relative;
-	background-image: url('images/background-img5.png');
+	background-image: url('background-img5.png');
     background-size: cover;        /* Ensures the image covers the full nav */
     background-repeat: no-repeat;  /* Prevents tiling */
     background-position: center;   /* Centers the image */

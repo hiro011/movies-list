@@ -25,14 +25,14 @@ document.addEventListener("DOMContentLoaded", function () {
 	navImageInit();
 	function navImageInit() {
 		const settings = JSON.parse(localStorage.getItem("settings_movie")) || {};
-		const bg = settings.navBg || "images/background-img5.png";
+		const bg = settings.navBg || "background-img5.png";
 		headerBg.style.backgroundImage = `url("${bg}")`;
 	}
 	
 	defImageInit();
 	function defImageInit() {
 		const settings = JSON.parse(localStorage.getItem("settings_movie")) || {};
-		const defImage = settings.defImg || "images/default-movie.jpg";
+		const defImage = settings.defImg || "default-movie.jpg";
 		const previewDefImg = document.getElementById('previewDefImage');
 		
 		previewDefImg.src = defImage;
@@ -168,11 +168,11 @@ document.addEventListener("DOMContentLoaded", function () {
 		navImageInit();
 	}
 
-	navBg1.addEventListener("click", () => updateNavBg("images/background-img1.png"));
-	navBg2.addEventListener("click", () => updateNavBg("images/background-img2.png"));
-	navBg3.addEventListener("click", () => updateNavBg("images/background-img3.png"));
-	navBg4.addEventListener("click", () => updateNavBg("images/background-img4.png"));
-	navBg5.addEventListener("click", () => updateNavBg("images/background-img5.png"));
+	navBg1.addEventListener("click", () => updateNavBg("background-img1.png"));
+	navBg2.addEventListener("click", () => updateNavBg("background-img2.png"));
+	navBg3.addEventListener("click", () => updateNavBg("background-img3.png"));
+	navBg4.addEventListener("click", () => updateNavBg("background-img4.png"));
+	navBg5.addEventListener("click", () => updateNavBg("background-img5.png"));
 	
 	const imgUploadNav = document.getElementById('imageUploadNav');
 	

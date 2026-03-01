@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Movies</title>
     <link rel="stylesheet" href="styles_settings.css">
-	<link rel="icon" type="image" href="images/cinema_1655698.png">
+	<link rel="icon" type="image" href="cinema_1655698.png">
 
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
@@ -18,9 +18,9 @@
 			function defaultSet() {
 				const settings = JSON.parse(localStorage.getItem("settings_movie")) || {};
 				const defaultSettings = {
-					navBg: "images/background-img5.png",
+					navBg: "background-img5.png",
 					theme: "purple",
-					defImg: "images/default-movie.jpg",
+					defImg: "default-movie.jpg",
 					defLink: "https://ww1.goojara.to/"
 				};
 		
@@ -39,7 +39,7 @@
 			navImageInit();
 			function navImageInit() {
 				const settings = JSON.parse(localStorage.getItem("settings_movie")) || {};
-				const bg = settings.navBg || "images/background-img2.png";
+				const bg = settings.navBg || "background-img2.png";
 				headerBg.style.backgroundImage = `url("${bg}")`;
 			}
 			

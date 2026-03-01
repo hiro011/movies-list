@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	navImageInit();
 	function navImageInit() {
 		const settings = JSON.parse(localStorage.getItem("settings_movie")) || {};
-		const bg = settings.navBg || "images/background-img5.png";
+		const bg = settings.navBg || "background-img5.png";
 		headerBg.style.backgroundImage = `url("${bg}")`;
 	}
 	
@@ -305,7 +305,7 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("scroll", function () {
 		const navBar = document.getElementById("nav-bar");
 		const settings = JSON.parse(localStorage.getItem("settings_movie")) || {};
-		const bg = settings.navBg || "images/background-img5.png";
+		const bg = settings.navBg || "background-img5.png";
 		
         if (window.scrollY > 250) {
             goTopBtn.style.display = "block";
@@ -354,7 +354,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		const reader = new FileReader();
 		const file = imageUpload.files[0];
 		const settings = JSON.parse(localStorage.getItem("settings_movie")) || {};
-		const defImage = settings.defImg || "images/default-movie.jpg";
+		const defImage = settings.defImg || "default-movie.jpg";
 		const defLnk = settings.defLink || "https://ww1.goojara.to/";
 		
 		if (name === "") {
@@ -649,7 +649,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		movies.forEach(movie => {
             // Ensure valid data before adding
             if (movie && movie.id != null && movie.name && movie.category) {
-                 addMovieToList(movie.id, movie.imgPath || "images/default-movie.jpg", movie.name, movie.link || "#", movie.category);
+                //  addMovieToList(movie.id, movie.imgPath || "default-movie.jpg", movie.name, movie.link || "#", movie.category);
+                 addMovieToList(movie.id, "default-movie.jpg", movie.name, movie.link || "#", movie.category);
             } else {
                 console.warn("Skipping invalid movie data from localStorage:", movie);
             }
