@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	navImageInit();
 	function navImageInit() {
 		const settings = JSON.parse(localStorage.getItem("settings_movie")) || {};
-		const bg = settings.navBg || "images/background-img5.png";
+		const bg = settings.navBg || "background-img5.png";
 		headerBg.style.backgroundImage = `url("${bg}")`;
 	}
 	
@@ -217,6 +217,12 @@ document.addEventListener("DOMContentLoaded", function () {
         currentEditMovie = null;
     }
 	
+	function getRelativePath(fullPath) {
+		const index = fullPath.indexOf('images/');
+		return index !== -1 ? fullPath.substring(index) : fullPath;
+	}
+
+
 	// Load stored image on page load
     document.addEventListener('DOMContentLoaded', function() {
         const storedImage = localStorage.getItem('uploadedImage');
@@ -299,7 +305,7 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("scroll", function () {
 		const navBar = document.getElementById("nav-bar");
 		const settings = JSON.parse(localStorage.getItem("settings_movie")) || {};
-		const bg = settings.navBg || "images/background-img5.png";
+		const bg = settings.navBg || "background-img5.png";
 		
         if (window.scrollY > 250) {
             goTopBtn.style.display = "block";
@@ -348,7 +354,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		const reader = new FileReader();
 		const file = imageUpload.files[0];
 		const settings = JSON.parse(localStorage.getItem("settings_movie")) || {};
-		const defImage = settings.defImg || "images/default-movie.jpg";
+		const defImage = settings.defImg || "default-movie.jpg";
 		const defLnk = settings.defLink || "https://ww1.goojara.to/";
 		
 		if (name === "") {
@@ -548,15 +554,18 @@ document.addEventListener("DOMContentLoaded", function () {
 			return;
 		}
 		// Default link if empty
-         if (newLink === "") {
-             newLink = "https://ww1.goojara.to/";
-         }
+		if (newLink === "") {
+			newLink = "https://ww1.goojara.to/";
+		}
 		 
 		// Determine the image path
-        let newImgPath = currentEditingMovie.imgPath; // Keep old image by default
-        if (file) {
-            newImgPath = `images/${file.name}`;
-        }
+		let newImgPath = currentEditingMovie.imgPath; // Keep old image by default
+		if (file) {
+			newImgPath = `images/${file.name}`;
+		}
+		// Ensure relative path
+		newImgPath = getRelativePath(newImgPath);
+
 
         updateMovie(currentEditingMovie, newImgPath, newName, newLink);
 	});
@@ -574,10 +583,11 @@ document.addEventListener("DOMContentLoaded", function () {
             const linkElement = movieLiElement.querySelector('.movie-names a');
 
             // Update the image source and alt text
-            if (imgElement) {
-                imgElement.src = newImg;
-                imgElement.alt = newName; // Update alt text for accessibility
-            }
+			if (imgElement) {
+				imgElement.src = getRelativePath(newImg);
+				imgElement.alt = newName;
+			}
+
 
             // Update the link href and text content
             if (linkElement) {
@@ -591,12 +601,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Update the movie in localStorage
         let movies = JSON.parse(localStorage.getItem("movies")) || [];
-        movies = movies.map(movie => {
-            if (movie.id === Number(oldMovie.id)) {
-                return { ...movie, imgPath: newImg, name: newName, link: newLink };
-            }
-            return movie;
-        });
+		movies = movies.map(movie => {
+			if (movie.id === Number(oldMovie.id)) {
+				return { ...movie, imgPath: getRelativePath(newImg), name: newName, link: newLink };
+			}
+			return movie;
+		});
+
         localStorage.setItem("movies", JSON.stringify(movies));
 
         // Re-apply the current search filter  
@@ -638,7 +649,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		movies.forEach(movie => {
             // Ensure valid data before adding
             if (movie && movie.id != null && movie.name && movie.category) {
-                 addMovieToList(movie.id, movie.imgPath || "images/default-movie.jpg", movie.name, movie.link || "#", movie.category);
+                //  addMovieToList(movie.id, movie.imgPath || "default-movie.jpg", movie.name, movie.link || "#", movie.category);
+                 addMovieToList(movie.id, "default-movie.jpg", movie.name, movie.link || "#", movie.category);
             } else {
                 console.warn("Skipping invalid movie data from localStorage:", movie);
             }

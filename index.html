@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movies</title>
     <link rel="stylesheet" href="styles.css">
-	<link rel="icon" type="image" href="images/cinema_1655698.png">
+	<link rel="icon" type="image" href="cinema_1655698.png">
 
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
@@ -17,9 +17,9 @@
 			function defaultSet() {
 				const settings = JSON.parse(localStorage.getItem("settings_movie")) || {};
 				const defaultSettings = {
-					navBg: "images/background-img5.png",
+					navBg: "background-img5.png",
 					theme: "purple",
-					defImg: "images/default-movie.jpg",
+					defImg: "default-movie.jpg",
 					defLink: "https://ww1.goojara.to/"
 				};
 				
@@ -96,7 +96,7 @@
         <section id="show-movie">
 			<span class="close-btn">&times;</span>
 			<div class="preview-image">
-				<img id="previewMovieImage" src="images/default-movie.jpg" alt="Show image">
+				<img id="previewMovieImage" src="default-movie.jpg" alt="Show image">
 			</div>
 			<h2>Movie Name</h2>
 		</section>
@@ -182,7 +182,26 @@
 			<div class="movie-section">
 				<h2>Plan To - <span class="movie-count" id="plan-to-count">0</span></h2>
 				<ul class="movie-list" id="plan-to-list">
-					
+					<li>
+						<div class="movie-image">
+							<img class="show-image" src="default-movie.jpg" alt="final space">
+						</div>
+						<div class="movie-names">
+							<a href="https://ww1.goojara.to/t7MdDV" target="_blank">final space</a>
+						</div>
+						<div class="movie-btn">
+							<select class="move-dropdown">
+								<option value="">Move to...</option>
+								<option value="watching">Watching</option>
+								<option value="plan-to">Plan To</option>
+								<option value="on-hold">On Hold</option>
+								<option value="maybe">Maybe</option>
+								<option value="watched">Watched</option>
+							</select>
+							<button class="edit-btn">✏️</button>
+							<button class="delete-btn">🗑</button>
+						</div>
+					</li>
 				</ul>
 			</div>
         </section>
@@ -220,10 +239,10 @@
 	
 	<footer>
 		<p>&copy; 2025 Ahmed Mehamedyesuf. All rights reserved.</p>
+		<button id="import-sample-btn" title="Import sample list">Import Sample</button>
 	</footer>
 	
     <script src="script.js"></script>
+    <script src="sample_data.js"></script>
 </body>
 </html>
-
-
